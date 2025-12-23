@@ -4,6 +4,22 @@
 
 using namespace std;
 
+class Item {
+public:
+	void setPrice(int price) { Price = price; }
+	void setName(string name) { Name = name; }
+	int getPrice() const { return Price; }
+	string getName() const { return Name; }
+
+private:
+	string Name;
+	int Price;
+};
+
+bool compareItemByPrice(Item& a, Item& b) {
+	return a.getPrice() < b.getPrice();
+}
+
 
 template <typename T>
 class Inventory {
@@ -69,17 +85,14 @@ public:
 		}
 	}
 
-};
-class Item {
-public:
-	void setPrice(int price) {Price = price;}
-	void setName(string name) {Name = name;}
-	int getPrice() const {return Price;}
-	string getName() const {return Name;}
+	void SortItems() {
+		sort(pItems_, pItems_ + size_, compareItemByPrice);
+		cout << "가격기준 오름차순 정렬" << endl;
+		for (size_t i = 0; i < size_; i++) {
+			cout << "이름: " << pItems_[i].getName() << " 가격: " << pItems_[i].getPrice() << endl;
+		}
+	}
 
-private:
-	string Name;
-	int Price;
 };
 
 
@@ -95,19 +108,20 @@ int main() {
 	item3.setName("장팔사모");
 	item3.setPrice(11000);
 
-	Bag.AddItem(item1);		//
+	Bag.AddItem(item1);		
 	Bag.AddItem(item2);
 	Bag.AddItem(item3);
+	Bag.AddItem(item1);
+	Bag.AddItem(item2);
 	Bag.AddItem(item3);
+	Bag.AddItem(item1);
+	Bag.AddItem(item2);
 	Bag.AddItem(item3);
-	Bag.AddItem(item3);
-	Bag.AddItem(item3);
-	Bag.AddItem(item3);
-	Bag.AddItem(item3);
-	Bag.AddItem(item3);
+	Bag.AddItem(item1);
 	Bag.PrintAllItems();
-	Bag.AddItem(item3);
-	Bag.PrintAllItems();
+	Bag.AddItem(item2);		// capacity를 넘어서는 갯수의 아이템을 인벤토리에 추가
+	Bag.PrintAllItems();	// AddItem 함수가 확장 기능을 사용하는지 확인
+	Bag.SortItems();	
 	
 
 	return 0;
